@@ -24,7 +24,6 @@ struct ShowView: View {
         VStack {
             KFImage(URL(string: show.smallCoverImage ?? ""))
                 .resizable()
-                .loadImmediately()
                 .placeholder {
                     Image("Show Placeholder")
                         .resizable()

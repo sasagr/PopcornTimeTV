@@ -26,7 +26,6 @@ struct EpisodeView: View {
     var body: some View {
         KFImage(URL(string: episode.smallBackgroundImage ?? ""))
             .resizable()
-            .loadImmediately()
             .placeholder {
                 Image("Episode Placeholder")
                     .resizable()

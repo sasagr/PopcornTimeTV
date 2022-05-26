@@ -21,7 +21,6 @@ struct PersonDetailsView: View, MediaPosterLoader {
                     if let image = viewModel.person.mediumImage {
                         KFImage(URL(string: image))
                             .resizable()
-                            .loadImmediately()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 150, height: 150)
                             .clipShape(Circle())

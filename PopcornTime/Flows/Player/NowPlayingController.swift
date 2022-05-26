@@ -91,7 +91,7 @@ class NowPlayingController {
     func configureNowPlayingInfo() {
         nowPlayingInfo = [MPMediaItemPropertyTitle: media.title,
                           MPMediaItemPropertyPlaybackDuration: TimeInterval(streamDuration/1000),
-                          MPNowPlayingInfoPropertyElapsedPlaybackTime: mediaplayer.time.value.doubleValue/1000,
+                          MPNowPlayingInfoPropertyElapsedPlaybackTime: (mediaplayer.time.value?.doubleValue ?? 0)/1000,
                           MPNowPlayingInfoPropertyPlaybackRate: Double(mediaplayer.rate),
                           MPMediaItemPropertyMediaType: MPMediaType.movie.rawValue]
         
@@ -109,7 +109,7 @@ class NowPlayingController {
     
     func configureNowPlayingPositions() {
         nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = TimeInterval(streamDuration/1000)
-        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = mediaplayer.time.value.doubleValue/1000
+        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = (mediaplayer.time.value?.doubleValue ?? 0)/1000
         nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = mediaplayer.rate
     }
     
@@ -154,8 +154,10 @@ class NowPlayingController {
 
 extension NowPlayingController: VLCMediaThumbnailerDelegate {
     func vlcScreenshotAtPercentage(_ percentage: Float, completion: @escaping (_ image: CGImage) -> Void) {
+        guard let media = mediaplayer.media else { return }
+        
         if mediaThumbnailer == nil {
-            mediaThumbnailer = VLCMediaThumbnailer(media: mediaplayer.media, andDelegate: self)
+            mediaThumbnailer = VLCMediaThumbnailer(media: media, andDelegate: self)
             mediaThumbnailer?.snapshotPosition = percentage
             let ratio = mediaplayer.videoSize.width / mediaplayer.videoSize.height
 //            #if os(iOS) || os(macOS)

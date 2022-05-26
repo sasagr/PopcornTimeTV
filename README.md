@@ -11,20 +11,39 @@ PopcornTimeTV is an Apple TV, iPhone and iPad application to torrent movies and 
 
 ## Compile yourself?
 
-First, you need to install [bundler](https://bundler.io) to your computer with the `gem install bundler` command.
-
-Then you can use [CocoaPods](http://cocoapods.org/) to install dependencies.
-
 Build instructions:
 
 ``` bash
-$ git clone https://github.com/PopcornTimeTV/PopcornTimeTV.git
+$ git clone https://github.com/alextud/PopcornTimeTV.git
 $ cd PopcornTimeTV/
-$ bundle install
-$ bundle exec pod repo update
-$ bundle exec pod install
-$ open PopcornTime.xcworkspace
+$ open PopcornTime.xcodeproj
 ```
+
+IN XCODE:
+
+```
+Select PopcornTime (tvOS) as target and set your Apple TV 4K as the build output (you may have to first connect your xcode to your Apple TV 4K to have it be available as output) (and I set my deployment target as 15.0)
+Go into General tab and change the bundle identifier to com.[your_own_indentifier].PopcornTime
+Go into Signing & Capabilities tab and set automatically manage signing, and select your team so there are no errors
+switch to TopShelf target (from tvOS)
+Go into General tab and change the bundle identifier to com.[your_own_indentifier].PopcornTime.TopShelf
+GO TO APPLE DEVELOPER WEBSITE and log in
+Go to Certificates, Identifiers & Profiles
+In Devices tab, make sure your Apple TV is registered
+In Profiles tab, make sure you have a profile created for your Apple TV, and download it
+GO BACK TO XCODE
+Still in TopShelf target, switch to Signing & Capabilities tab
+Select the profile you just downloaded as the Provisioning profile (automatic signing should be unchecked)
+Click on the build button, and after some time the app should appear on your Apple TV 4K
+```
+
+Here were some of the gotchas:
+
+It was tricky to wirelessly connect to my Apple TV, the key was to go into Settings > Remotes and Devices > Remote App and Devices on the Apple TV first, that allowed Xcode to find it
+There was a lot of trial and error creating the device and profile up on developer.apple.com (you will need the UUID of your Apple TV, which you can get from Xcode when you have connected to it)
+
+
+To change VLCKit version, edit VLCKit/get-vlc-frameworks.sh file
 
 ## License
 

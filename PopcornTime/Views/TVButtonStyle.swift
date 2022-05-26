@@ -14,11 +14,19 @@ struct TVButtonStyle: ButtonStyle {
     var onPressed: () -> Void = {} /// iOS only
     var isSelected = false /// iOS only
     
+    @State var isHovering = false ///macOS only
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         #if os(tvOS)
         TVButton(configuration: configuration, onFocus: onFocus, onPressed:onPressed, isSelected: false)
         #else
         TVButton(configuration: configuration, onFocus: onFocus, onPressed:onPressed, isSelected: isSelected)
+            #if os(macOS)
+            .onHover { hover in
+                isHovering = hover
+            }
+            .environment(\.isFocused, isHovering)
+            #endif
         #endif
     }
 }

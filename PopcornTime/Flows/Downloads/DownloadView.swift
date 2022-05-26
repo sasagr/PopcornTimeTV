@@ -32,7 +32,6 @@ struct DownloadView: View {
                     .background {
                         KFImage(URL(string: viewModel.imageUrl))
                             .resizable()
-                            .loadImmediately()
                             .placeholder {
                                 Image(viewModel.placeholderImage)
                                     .resizable()

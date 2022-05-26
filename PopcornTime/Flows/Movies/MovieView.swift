@@ -26,7 +26,6 @@ struct MovieView: View {
         VStack {
             KFImage(URL(string: movie.smallCoverImage ?? ""))
                 .resizable()
-                .loadImmediately()
                 .placeholder {
                     Image("Movie Placeholder")
                         .resizable()

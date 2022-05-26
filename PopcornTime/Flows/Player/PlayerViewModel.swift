@@ -88,8 +88,9 @@ class PlayerViewModel: NSObject, ObservableObject {
     init(media: Media, fromUrl: URL, localUrl: URL, directory: URL, streamer: PTTorrentStreamer) {
         self.media = media
         self.streamer = streamer
-        
+        #if os(tvOS) || os(iOS)
         mediaplayer.audio?.passthrough = true
+        #endif
         mediaplayer.media = VLCMedia(url: fromUrl)
         
         self.nowPlaying = NowPlayingController(mediaplayer: mediaplayer, media: media, localPathToMedia: localUrl)

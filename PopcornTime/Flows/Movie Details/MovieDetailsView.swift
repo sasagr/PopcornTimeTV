@@ -100,7 +100,6 @@ struct MovieDetailsView: View, MediaPosterLoader {
             .background(
                 KFImage(viewModel.backgroundUrl)
                     .resizable()
-                    .loadImmediately()
                     .aspectRatio(contentMode: .fill)
                     .padding(0)
             )
@@ -168,9 +167,11 @@ struct MovieDetailsView: View, MediaPosterLoader {
             DownloadButton(viewModel: viewModel.downloadModel)
         }
         .buttonStyle(TVButtonStyle(onFocus: {
+            #if os(tvOS)
             withAnimation {
                 scroll?.scrollTo(section1, anchor: .top)
             }
+            #endif
         }))
     }
     

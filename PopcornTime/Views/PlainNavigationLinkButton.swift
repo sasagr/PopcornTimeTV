@@ -20,7 +20,11 @@ struct PlainNavigationLinkButton: View {
 
     var body: some View {
         configuration.label
+            #if os(tvOS)
             .scaleEffect(focused ? theme.scaleEffect : 1)
+            #elseif os(macOS)
+            .overlay(overlayColor)
+            #endif
             .foregroundColor((focused || configuration.isPressed) ? Color.primary : Color.appSecondary)
             .animation(.easeOut, value: focused)
             #if os(iOS)
@@ -43,7 +47,13 @@ struct PlainNavigationLinkButton: View {
     /// highlight effect
     @ViewBuilder
     var overlayColor: some View {
-        if configuration.isPressed {
+        #if os(iOS) || os(tvOS)
+        let show = configuration.isPressed
+        #elseif os(macOS)
+        let show = focused
+        #endif
+        
+        if show {
             Color(white: 0, opacity: 0.3).mask(configuration.label)
         } else {
             EmptyView()
