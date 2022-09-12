@@ -52,6 +52,12 @@ struct TrailerButton: View {
             .onDisappear {
                 onPlayerClose()
             }
+            .overlay(alignment: .topLeading, content: {
+                if #available(iOS 16, macOS 9999, tvOS 9999, *) {
+                    closeButton
+                        .position(x:20, y:35)
+                }
+            })
             .ignoresSafeArea()
     }
     
@@ -71,6 +77,21 @@ struct TrailerButton: View {
                 viewModel.error.wrappedValue = error
             }
         }
+    }
+    
+    @ViewBuilder
+    var closeButton: some View {
+        Button {
+            withAnimation {
+                showPlayer = false
+            }
+            onPlayerClose()
+        } label: {
+            Color.clear
+                .overlay(Image("CloseiOS"))
+        }
+        .frame(width: 46, height: 46)
+//        .background(.regularMaterial)
     }
 }
 

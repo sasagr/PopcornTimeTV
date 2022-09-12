@@ -35,6 +35,7 @@ struct MovieDetailsView: View, MediaPosterLoader {
                                 
                             HStack(alignment: .top, spacing: 40) {
                                 leftSection
+                                    .hideIfCompactSize()
                                 rightSection(scroll: scroll)
                                 Spacer()
                             }
@@ -163,7 +164,9 @@ struct MovieDetailsView: View, MediaPosterLoader {
             TrailerButton(viewModel: viewModel.trailerModel)
             PlayButton(media: movie)
             watchlistButton
+                .hideIfCompactSize()
             watchedButton
+                .hideIfCompactSize()
             DownloadButton(viewModel: viewModel.downloadModel)
         }
         .buttonStyle(TVButtonStyle(onFocus: {
@@ -183,13 +186,18 @@ struct MovieDetailsView: View, MediaPosterLoader {
         let year = movie.year
         
         let items = [runtime, year].compactMap({$0}).map{Text($0)}
-        + ([movie.certification, "HD", "CC"]).filter{ !$0.isEmpty }.map {
+        let certifications = ([movie.certification, "HD", "CC"]).filter{ !$0.isEmpty }.map {
                 Text(Image($0).renderingMode(.template))
             }
         return HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 25) {
             ForEach(0..<items.count, id: \.self) { item in
                 items[item]
             }
+            
+            ForEach(0..<certifications.count, id: \.self) { item in
+                certifications[item]
+            }
+            .hideIfCompactSize()
             
             StarRatingView(rating: movie.rating / 20)
                 .frame(width: theme.starSize.width, height: theme.starSize.height)
@@ -295,14 +303,14 @@ extension MovieDetailsView {
         let leftSectionTitle: CGFloat = value(tvOS: 24, macOS: 16)
         let leftSectionTitleContent: CGFloat = value(tvOS: 31, macOS: 18)
         let leftSectionWidth: CGFloat = value(tvOS: 340, macOS: 200)
-        let leftSectionLeading: CGFloat = value(tvOS: 100, macOS: 30)
+        var leftSectionLeading: CGFloat { value(tvOS: 100, macOS: 30, compactSize: 10) }
         let starSize: CGSize = value(tvOS: CGSize(width: 220, height: 40), macOS: CGSize(width: 110, height: 20))
         let starOffset: CGFloat = value(tvOS: -8, macOS: -4)
-        let watchedSection: (height: CGFloat, cellWidth: CGFloat, spacing: CGFloat, leading: CGFloat)
-            = (height: value(tvOS: 450, macOS: 280),
+        var watchedSection: (height: CGFloat, cellWidth: CGFloat, spacing: CGFloat, leading: CGFloat) {
+             (height: value(tvOS: 450, macOS: 280),
                cellWidth: value(tvOS: 220, macOS: 150),
                spacing: value(tvOS: 80, macOS: 30),
-               leading: value(tvOS: 90, macOS: 50))
+               leading: value(tvOS: 90, macOS: 50, compactSize: 20)) }
         let backgroundOpacity = value(tvOS: 0.3, macOS: 0.5)
         let titleFont: Font = Font.system(size: value(tvOS: 76, macOS: 50), weight: .medium)
         let section1Height: CGFloat = value(tvOS: 960, macOS: 710)

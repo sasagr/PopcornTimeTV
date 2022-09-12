@@ -136,6 +136,7 @@ struct EpisodesView: View {
                         Text(episode.summary)
                             .multilineTextAlignment(.leading)
                         Spacer(minLength: theme.currentEpisode.trailing)
+                            .hideIfCompactSize()
                     }
                     if episode == currentEpisode, let downloadModel = downloadModel {
                         DownloadButton(viewModel: downloadModel)
@@ -155,11 +156,11 @@ extension EpisodesView {
         let episodeWidth: CGFloat = value(tvOS: 330, macOS: 227)
         let episodeHeight: CGFloat = value(tvOS: 200, macOS: 141)
         let episodeSpacing: CGFloat = value(tvOS: 40, macOS: 24)
-        let currentEpisode: (leading: CGFloat, height: CGFloat, trailing: CGFloat)
-            = (leading: value(tvOS: 90, macOS: 50),
+        var currentEpisode: (leading: CGFloat, height: CGFloat, trailing: CGFloat)
+            { (leading: value(tvOS: 90, macOS: 50, compactSize: 20),
                height: value(tvOS: 350, macOS: 250),
-               trailing: value(tvOS: 500, macOS: 200))
-        let leading: CGFloat = value(tvOS: 90, macOS: 50)
+               trailing: value(tvOS: 500, macOS: 200)) }
+        var leading: CGFloat { value(tvOS: 90, macOS: 50, compactSize: 20) }
         
         let scrollPosition: UnitPoint? = value(tvOS: nil, macOS: nil)
     }

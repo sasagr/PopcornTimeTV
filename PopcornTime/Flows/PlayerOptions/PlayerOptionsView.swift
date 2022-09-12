@@ -25,6 +25,8 @@ struct PlayerOptionsView: View {
     @Binding var subtitleDelay: Int
     @Binding var subtitleEncoding: String
     @Binding var subtitle: Subtitle?
+    @Binding var audioTrackIndex: Int
+    var audioTracks: [String]
     
     enum Selection: Int {
         case info = 0, subtitles, audio
@@ -49,7 +51,9 @@ struct PlayerOptionsView: View {
                 .tag(Selection.subtitles)
             AudioView(
                 currentDelay: $audioDelay,
-                currentSound: $audioProfile)
+                currentSound: $audioProfile,
+                audioTrackIndex: $audioTrackIndex,
+                audioTracks: audioTracks)
                 .tabItem {
                     Text("Audio")
                 }
@@ -83,7 +87,10 @@ struct PlayerOptionsView: View {
                               currentSubtitle: $subtitle,
                               viewModel: SubtitlesViewModel(subtitles: media?.subtitles ?? [:]))
             case .audio:
-                AudioView(currentDelay: $audioDelay, currentSound: $audioProfile)
+                AudioView(currentDelay: $audioDelay,
+                          currentSound: $audioProfile,
+                          audioTrackIndex: $audioTrackIndex,
+                          audioTracks: audioTracks)
             }
         }
         .frame(maxWidth: 1024, maxHeight: theme.maxHeight)
@@ -110,7 +117,9 @@ struct PlayerOptionsView_Previews: PreviewProvider {
                                   audioProfile: .constant(.fullDynamicRange),
                                   subtitleDelay: .constant(0),
                                   subtitleEncoding: .constant(""),
-                                  subtitle: .constant(nil))
+                                  subtitle: .constant(nil),
+                                  audioTrackIndex: .constant(0),
+                                  audioTracks: [])
                 Spacer()
             }
             
@@ -121,7 +130,9 @@ struct PlayerOptionsView_Previews: PreviewProvider {
                                   audioProfile: .constant(.fullDynamicRange),
                                   subtitleDelay: .constant(0),
                                   subtitleEncoding: .constant(""),
-                                  subtitle: .constant(nil))
+                                  subtitle: .constant(nil),
+                                  audioTrackIndex: .constant(0),
+                                  audioTracks: [])
                 Spacer()
             }
             
@@ -132,7 +143,9 @@ struct PlayerOptionsView_Previews: PreviewProvider {
                                   audioProfile: .constant(.fullDynamicRange),
                                   subtitleDelay: .constant(0),
                                   subtitleEncoding: .constant(""),
-                                  subtitle: .constant(nil))
+                                  subtitle: .constant(nil),
+                                  audioTrackIndex: .constant(0),
+                                  audioTracks: [])
                 Spacer()
             }
         }

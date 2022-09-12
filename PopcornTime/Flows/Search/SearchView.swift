@@ -13,6 +13,7 @@ struct SearchView: View, CharacterHeadshotLoader {
     struct Theme {
         let itemWidth: CGFloat = value(tvOS: 240, macOS: 160)
         let personWidth: CGFloat  = value(tvOS: 220, macOS: 150)
+        var horizontalPadding: CGFloat { value(tvOS: 40, macOS: 40, compactSize: 10) }
     }
     let theme = Theme()
     
@@ -53,7 +54,7 @@ struct SearchView: View, CharacterHeadshotLoader {
             .pickerStyle(.segmented)
         }
         .padding([.top, .leading, .trailing])
-        .padding(.horizontal, 40)
+        .padding(.horizontal, theme.horizontalPadding)
         #elseif os(tvOS)
         pickerView
         #elseif os(macOS)

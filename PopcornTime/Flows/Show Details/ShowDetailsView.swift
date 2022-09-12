@@ -63,7 +63,7 @@ struct ShowDetailsView: View, MediaPosterLoader {
                         .padding([.leading, .trailing], 100)
                         #else
                         .frame(idealHeight: 780)
-                        .padding([.leading, .trailing], 50)
+                        .padding([.leading, .trailing], theme.watchedSection.leading)
                         #endif
                     }
                     #if os(tvOS)
@@ -149,7 +149,7 @@ struct ShowDetailsView: View, MediaPosterLoader {
         let year = show.year
         
         let items = [genre, year].compactMap({$0}).map{Text($0)}
-            + (["HD", "CC"]).map { Text(Image($0).renderingMode(.template)) }
+        let certifications = (["HD", "CC"]).map { Text(Image($0).renderingMode(.template)) }
         
         let watchOn: String = .localizedStringWithFormat("Watch %@ on %@".localized, show.title, show.network ?? "TV")
         let runtime = "Run Time".localized + " \(show.runtime ?? 0) min"
@@ -161,6 +161,11 @@ struct ShowDetailsView: View, MediaPosterLoader {
                 ForEach(0..<items.count, id: \.self) { item in
                     items[item]
                 }
+                ForEach(0..<certifications.count, id: \.self) { item in
+                    certifications[item]
+                }
+                .hideIfCompactSize()
+                
                 StarRatingView(rating: show.rating / 20)
                     .frame(width: theme.starSize.width, height: theme.starSize.height)
                     .padding(.top, theme.starOffset)
@@ -185,6 +190,7 @@ struct ShowDetailsView: View, MediaPosterLoader {
                     seasonsButton
                 }
                 watchlistButton
+                    .hideIfCompactSize()
             }
             if viewModel.isLoading {
                 ProgressView()
@@ -299,12 +305,12 @@ extension ShowDetailsView {
         
         let starSize: CGSize = value(tvOS: CGSize(width: 220, height: 40), macOS: CGSize(width: 110, height: 20))
         let starOffset: CGFloat = value(tvOS: -8, macOS: -4)
-        let watchedSection: (height: CGFloat, cellWidth: CGFloat, cellHeight: CGFloat, spacing: CGFloat, leading: CGFloat)
-            = (height: value(tvOS: 475, macOS: 280),
+        var watchedSection: (height: CGFloat, cellWidth: CGFloat, cellHeight: CGFloat, spacing: CGFloat, leading: CGFloat)
+        { (height: value(tvOS: 475, macOS: 280),
                cellWidth: value(tvOS: 220, macOS: 150),
                cellHeight: value(tvOS: 460, macOS: 180),
                spacing: value(tvOS: 80, macOS: 30),
-               leading: value(tvOS: 90, macOS: 50))
+            leading: value(tvOS: 90, macOS: 50, compactSize: 20)) }
         let backgroundOpacity = value(tvOS: 0.3, macOS: 0.5)
         let seasonFontSize: CGFloat = value(tvOS: 43, macOS: 21)
         let titleFont: Font = Font.system(size: value(tvOS: 76, macOS: 50), weight: .medium)

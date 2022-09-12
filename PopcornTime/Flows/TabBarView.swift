@@ -57,9 +57,13 @@ struct TabBarView: View {
                     Text("Watchlist")
                 }
                 .tag(Selection.watchlist)
+                .hideIfCompactSize()
             SearchView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
+                    #if os(iOS)
+                    Text("Search")
+                    #endif
                 }
                 .tag(Selection.search)
             DownloadsView()

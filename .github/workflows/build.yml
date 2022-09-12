@@ -25,7 +25,7 @@ jobs:
         path: ~/Library/Developer/Xcode/DerivedData/PopcornTime*/SourcePackages/
         key: ${{ runner.os }}-spm-${{ hashFiles('PopcornTime.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
         restore-keys: |
-          ${{ runner.os }}-spm-
+            ${{ runner.os }}-spm-${{ hashFiles('PopcornTime.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
                 
     - name: Compile
       run: |
@@ -77,7 +77,7 @@ jobs:
         path: ~/Library/Developer/Xcode/DerivedData/PopcornTime*/SourcePackages/
         key: ${{ runner.os }}-spm-${{ hashFiles('PopcornTime.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
         restore-keys: |
-          ${{ runner.os }}-spm-
+            ${{ runner.os }}-spm-${{ hashFiles('PopcornTime.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
                 
     - name: Compile
       run: |
@@ -129,7 +129,7 @@ jobs:
         path: ~/Library/Developer/Xcode/DerivedData/PopcornTime*/SourcePackages/
         key: ${{ runner.os }}-spm-${{ hashFiles('PopcornTime.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
         restore-keys: |
-          ${{ runner.os }}-spm-
+            ${{ runner.os }}-spm-${{ hashFiles('PopcornTime.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
                 
     - name: Compile
       run: |

@@ -37,12 +37,16 @@ struct SettingsView: View {
             #if os(tvOS) || os(iOS)
             Image("Icon")
                 .padding(.leading, theme.iconLeading)
+                .hideIfCompactSize()
             #endif
             List() {
                 Section(header: sectionHeader("Player")) {
                     themeSongVolumeButton
                     removeCacheOnPlayerExitButton
                     qualityAlertButton
+                    if viewModel.hasCellularNetwork {
+                        streamOnCellularButton
+                    }
                 }
                 
                 Section(header: sectionHeader("Subtitles")) {
@@ -118,6 +122,15 @@ struct SettingsView: View {
         button(text: "Clear Cache Upon Exit", value: clearCacheText) {
             Session.removeCacheOnPlayerExit.toggle()
             clearCacheText = Session.removeCacheOnPlayerExit ? "On".localized : "Off".localized
+        }
+    }
+    
+    @State var streamOnCellularText = Session.streamOnCellular ? "On".localized : "Off".localized
+    @ViewBuilder
+    var streamOnCellularButton: some View {
+        button(text: "Stream on cellular network", value: streamOnCellularText) {
+            Session.streamOnCellular.toggle()
+            streamOnCellularText = Session.streamOnCellular ? "On".localized : "Off".localized
         }
     }
     
@@ -400,7 +413,7 @@ extension SettingsView {
     struct Theme {
         let fontSize: CGFloat = value(tvOS: 38, macOS: 20)
         let hStackSpacing: CGFloat = value(tvOS: 300, macOS: 50)
-        let iconLeading: CGFloat = value(tvOS: 100, macOS: 50)
+        var iconLeading: CGFloat { value(tvOS: 100, macOS: 50, compactSize: 0) }
     }
 }
 

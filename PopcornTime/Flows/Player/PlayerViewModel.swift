@@ -392,7 +392,10 @@ extension PlayerViewModel: VLCMediaPlayerDelegate {
         case .ended:
             fallthrough
         case .stopped:
-            didFinishPlaying()
+            let mediaEndedOnStart = mediaplayer.position == 0 // workaround
+            if !mediaEndedOnStart {
+                didFinishPlaying()
+            }
         case .paused:
             saveMediaProgress(status: .paused)
             isPlaying = false

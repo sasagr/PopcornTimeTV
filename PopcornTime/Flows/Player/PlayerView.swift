@@ -95,6 +95,7 @@ struct PlayerView: View {
                     }
                 }
             #else
+                .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation {
                         if viewModel.showInfo == true {
@@ -151,6 +152,26 @@ struct PlayerView: View {
                 .transition(.opacity)
             #endif
         }
+        
+        #if os(macOS)
+        // add keyboard shortcuts
+        ZStack {
+            Button {
+                viewModel.rewind()
+            } label: { }
+                .keyboardShortcut(.leftArrow, modifiers: [])
+            Button {
+                viewModel.fastForward()
+            } label: { }
+            .keyboardShortcut(.rightArrow, modifiers: [])
+            Button {
+                viewModel.playandPause()
+                viewModel.toggleControlsVisible()
+            } label: { }
+            .keyboardShortcut(" ", modifiers: [])
+        }
+        .opacity(0)
+        #endif
     }
     
     @ViewBuilder
@@ -163,7 +184,10 @@ struct PlayerView: View {
                                   audioProfile: viewModel.audioController.audioProfileBinding,
                                   subtitleDelay: viewModel.subtitleController.subtitleDelayBinding,
                                   subtitleEncoding: viewModel.subtitleController.subtitleEncodingBinding,
-                                  subtitle: viewModel.subtitleController.subtitleBinding)
+                                  subtitle: viewModel.subtitleController.subtitleBinding,
+                                  audioTrackIndex: viewModel.audioController.audioTrackBinding,
+                                  audioTracks: viewModel.audioController.audioTracksNames()
+            )
                 #if os(tvOS)
                 .prefersDefaultFocus(in: namespace)
                 .onExitCommand(perform: {
