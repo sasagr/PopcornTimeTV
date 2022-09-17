@@ -287,8 +287,12 @@ class PlayerViewModel: NSObject, ObservableObject {
     
     func resetIdleTimer() {
         idleWorkItem?.cancel()
-        idleWorkItem = DispatchWorkItem() { [unowned self] in
-            if showControls && self.mediaplayer.isPlaying && !self.progress.isScrubbing && !self.progress.isBuffering && self.mediaplayer.rate == 1.0
+        idleWorkItem = DispatchWorkItem() { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            if self.showControls && self.mediaplayer.isPlaying && !self.progress.isScrubbing && !self.progress.isBuffering && self.mediaplayer.rate == 1.0
                 //&& self.movieView.isDescendant(of: self.view) // If paused, scrubbing, fast forwarding, loading or mirroring, cancel work Item so UI doesn't disappear
             {
                 self.toggleControlsVisible()
